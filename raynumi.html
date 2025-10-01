@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>raynum</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f0e6; /* beige background */
+    color: #7f0000; /* dark red text */
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  header {
+    text-align: center;
+    padding: 2rem;
+  }
+
+  section {
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 600px;
+    background-color: #fff3f0;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  button {
+    background-color: #7f0000;
+    color: #f5f0e6;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.2s;
+  }
+
+  button:hover {
+    transform: scale(1.1);
+  }
+
+  /* Falling hearts using Unicode */
+  .heart {
+    position: fixed;
+    font-size: 24px;
+    color: #7f0000; /* dark red hearts */
+    pointer-events: none;
+    z-index: 1000;
+    animation-name: fall, sway;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-50px); opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+  }
+
+  @keyframes sway {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(20px); }
+    100% { transform: translateX(0); }
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>💌 happy boyfriends day baby</h1>
+</header>
+
+<section>
+  <h2>i love you</h2>
+  <p class="content">happy boyfriends day bacha, ive been waiting for this day cos i wanted to see if you'd like what i made for you, i feel so coders after watching a billion tutorials, i love you so much baby im so happy youre mine and im yours, you make life worth living, itna pyaar dete ho likeee monkey covering eyes emoji typa feeling ajati hai, youre so pretty i could look at you for hours, hours kya ab mene puri zindagi apke saath guzarni hai, apko saara din dekte dekte. i lob how you put up with my kalesh n then i feel bad cos youre just a baby and you deserve so much paali :c</p>
+  <button onclick="toggleContent(this)">❤️</button>
+</section>
+
+<section>
+  <h2>i love you</h2>
+  <p class="content hidden">i hope we'll never leave eachother, im ready to face anything for you rayan, mene pehle bhi risk it all' kiya tha and i would do it again, kyunke youre worth it. ive loved every single day of these 1 year and 7 months with you, we've made it so far baby. i wanna love you har rozzzz i could never get tired of loving you. humesha mere rahoge meri jaan mwa.</p>
+  <button onclick="toggleContent(this)">❤️</button>
+</section>
+
+<section>
+  <h2>i love you</h2>
+  <p class="content hidden">youre my khushi, apke beghair i cant even think of life wallah, youre literally the only person i text all day and share every single thing to, sabse pehle apke paas aati hoon. all my friends tell me they're there for me likin ek message ka reply bhi wo do din baad dete hein, nobodys like you shona. i love you so much and i miss you like crazyyy, ek jhalak ke liye taraste taraste maut hi na ajaye bas ab. youre gonna be my sabr ka meetha phal when i finally get to see you again.</p>
+  <button onclick="toggleContent(this)">❤️</button>
+</section>
+
+<script>
+  // Toggle paragraph visibility
+  function toggleContent(btn) {
+    const para = btn.previousElementSibling;
+    para.classList.toggle('hidden');
+  }
+
+  // Falling hearts using Unicode
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.textContent = '❤️';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.animationDuration = (4 + Math.random() * 4) + 's, ' + (2 + Math.random() * 2) + 's';
+    heart.style.fontSize = (16 + Math.random() * 24) + 'px';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 8000);
+  }
+
+  setInterval(createHeart, 400);
+</script>
+
+</body>
+</html>
