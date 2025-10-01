@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>catch woonan :o</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #d0d0d0; /* greyish background */
+    font-family: Arial, sans-serif;
+    color: #7f0000;
+  }
+
+  #gameCanvas {
+    display: block;
+  }
+
+  h1 {
+    text-align: center;
+    margin: 1rem 0;
+    font-size: 2rem;
+    color: #7f0000;
+  }
+
+  #message {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: #7f0000;
+    text-align: center;
+    display: none;
+    z-index: 1000;
+  }
+
+  #winSection {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -30%);
+    background-color: #fff3f0;
+    padding: 2rem 3rem;
+    border-radius: 16px;
+    font-size: 1.5rem;
+    color: #7f0000;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    display: none;
+    text-align: center;
+    max-width: 90%;
+    z-index: 2000;
+  }
+
+  #scoreDisplay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1.5rem;
+  }
+
+  .sparkle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #FFD700;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: sparkle 0.5s forwards;
+    z-index: 2000;
+  }
+
+  @keyframes sparkle {
+    0% { transform: scale(0.5); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<h1>catch woonan :o</h1>
+<div id="scoreDisplay">Score: 0</div>
+<div id="message">awh, it's okay keep going</div>
+<div id="winSection">🎉 you win!<br>im so proud of you babyy, thanks for putting up with the slow woonan falling im bad at this :c i love you so much and youre my woonan, i look forward to so many more boyfriend days with you, youve always been so creative isliye mene socha aj mein bhi try karlu, im so inlove with you mwah i lobe you!</div>
+<canvas id="gameCanvas"></canvas>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// Basket as emoji 🧺, moved up more
+let basket = {
+  width: 80,
+  height: 40,
+  x: canvas.width / 2 - 40,
+  y: canvas.height - 150, // moved up from 80 -> 150
+  symbol: '🧺',
+  fontSize: 40
+};
+
+// Only one koala at a time
+let koala = null;
+
+let score = 0;
+const scoreDisplay = document.getElementById('scoreDisplay');
+const message = document.getElementById('message');
+const winSection = document.getElementById('winSection');
+
+// Track mouse/touch
+let basketX = basket.x;
+canvas.addEventListener('mousemove', (e) => {
+  basketX = e.clientX - basket.width / 2;
+});
+canvas.addEventListener('touchmove', (e) => {
+  basketX = e.touches[0].clientX - basket.width / 2;
+});
+
+// Draw basket
+function drawBasket() {
+  basket.x = basketX;
+  if(basket.x < 0) basket.x = 0;
+  if(basket.x + basket.width > canvas.width) basket.x = canvas.width - basket.width;
+  ctx.font = basket.fontSize + 'px Arial';
+  ctx.fillText(basket.symbol, basket.x, basket.y + basket.height);
+}
+
+// Create a single koala if none exists
+function createKoala() {
+  if(!koala){
+    koala = {
+      x: Math.random() * (canvas.width - 40),
+      y: -40,
+      size: 40,
+      speed: 3
+    };
+  }
+}
+
+// Draw the koala
+function drawKoala() {
+  if(koala){
+    ctx.font = '30px Arial';
+    ctx.fillText('🐨', koala.x, koala.y);
+    koala.y += koala.speed;
+
+    // Check catch
+    if(koala.y + koala.size >= basket.y && koala.y <= basket.y + basket.height &&
+       koala.x + koala.size/2 >= basket.x && koala.x <= basket.x + basket.width) {
+      score++;
+      scoreDisplay.textContent = "Score: " + score;
+      createSparkle(koala.x + koala.size/2, koala.y);
+      koala = null; // remove koala
+    } 
+    // Check miss
+    else if(koala.y > canvas.height){
+      koala = null;
+      showMessage();
+    }
+  }
+}
+
+function createSparkle(x, y){
+  const sparkle = document.createElement('div');
+  sparkle.className = 'sparkle';
+  sparkle.style.left = (x - 10) + 'px';
+  sparkle.style.top = (y - 10) + 'px';
+  document.body.appendChild(sparkle);
+  setTimeout(()=> sparkle.remove(), 500);
+}
+
+function showMessage(){
+  message.style.display = 'block';
+  setTimeout(()=>{ message.style.display = 'none'; }, 1000);
+}
+
+function checkWin(){
+  if(score >= 10){
+    winSection.style.display = 'block';
+  }
+}
+
+function gameLoop(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  drawBasket();
+  drawKoala();
+  checkWin();
+  requestAnimationFrame(gameLoop);
+}
+
+// Spawn koala every 800ms if none exists
+setInterval(createKoala, 800);
+
+gameLoop();
+
+// Resize
+window.addEventListener('resize', ()=>{
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  basket.y = canvas.height - 150; // keep basket up
+});
+</script>
+
+</body>
+</html>
